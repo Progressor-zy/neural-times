@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEURAL·时报 — 全球 AI 新闻前线</title>
+  <meta name="description" content="NEURAL·时报：追踪全球人工智能最新动态 —— 大模型、芯片算力、机器人、AI 科研与行业应用。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="styles.css?v=18" />
+</head>
+<body>
+  <!-- 背景装饰 -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a class="logo" href="#top">
+        <span class="logo-mark">
+          <svg viewBox="0 0 32 32" width="26" height="26" fill="none">
+            <circle cx="16" cy="16" r="3.2" fill="currentColor"/>
+            <circle cx="5" cy="8" r="2.2" fill="currentColor" opacity=".7"/>
+            <circle cx="27" cy="8" r="2.2" fill="currentColor" opacity=".7"/>
+            <circle cx="6" cy="25" r="2.2" fill="currentColor" opacity=".7"/>
+            <circle cx="26" cy="25" r="2.2" fill="currentColor" opacity=".7"/>
+            <path d="M7 9.5 13.4 14M25 9.5 18.6 14M7.8 23.4l5.6-4.8M24.2 23.4l-5.6-4.8" stroke="currentColor" stroke-width="1.4"/>
+          </svg>
+        </span>
+        <span class="logo-text">NEURAL<em>·时报</em></span>
+      </a>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="#top" class="nav-link active">首页</a>
+        <a href="#latest" class="nav-link">最新</a>
+        <a href="#trending" class="nav-link">热榜</a>
+        <a href="#leaderboard" class="nav-link">性能榜</a>
+        <a href="#newsletter" class="nav-link">订阅</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="searchInput" placeholder="搜索新闻、公司、人物…" autocomplete="off" />
+        </div>
+        <button class="btn-subscribe" onclick="document.getElementById('newsletter').scrollIntoView({behavior:'smooth'})">订阅</button>
+        <button class="menu-toggle" id="menuToggle" aria-label="菜单">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 突发新闻滚动条 -->
+  <div class="ticker-bar">
+    <div class="container ticker-inner">
+      <span class="ticker-label"><span class="pulse-dot"></span>实时快讯</span>
+      <div class="ticker-viewport"><div class="ticker-track" id="tickerTrack"></div></div>
+    </div>
+  </div>
+
+  <main id="top">
+    <!-- Hero 头条 -->
+    <section class="hero container" id="heroSection"></section>
+
+    <!-- 分类筛选 -->
+    <section class="container" id="latest">
+      <div class="section-head">
+        <h2 class="section-title">最新报道</h2>
+        <div class="category-tabs" id="categoryTabs"></div>
+      </div>
+
+      <div class="content-layout">
+        <!-- 新闻网格 -->
+        <div class="news-grid" id="newsGrid"></div>
+
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+          <div class="side-card" id="trending">
+            <h3 class="side-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.5 1.5s.75 2.62.75 4.87c0 2.25-1.5 3.75-3.38 3.75-1.5 0-2.62-1.12-2.62-2.62 0-.38.07-.75.15-1.13C6.38 8.25 4.5 11.25 4.5 14.25c0 4.13 3.38 7.5 7.5 7.5s7.5-3.37 7.5-7.5c0-6-6-12.75-6-12.75Z"/></svg>
+              24 小时热榜
+            </h3>
+            <ol class="trend-list" id="trendList"></ol>
+          </div>
+
+          <div class="side-card">
+            <h3 class="side-title">本周关键词</h3>
+            <div class="tag-cloud" id="tagCloud"></div>
+          </div>
+
+          <div class="side-card newsletter-card" id="newsletter">
+            <h3 class="side-title">订阅每日 AI 简报</h3>
+            <p class="newsletter-desc">每天早上 8 点，3 分钟读完全球 AI 大事。</p>
+            <form id="newsletterForm" class="newsletter-form">
+              <input type="email" id="emailInput" placeholder="you@example.com" required />
+              <button type="submit">订阅</button>
+            </form>
+            <p class="newsletter-msg" id="newsletterMsg"></p>
+          </div>
+        </aside>
+      </div>
+
+      <p class="empty-tip" id="emptyTip" hidden>没有找到相关报道，换个关键词试试。</p>
+    </section>
+
+    <!-- 大模型性能排行榜 -->
+    <section class="container leaderboard-section" id="leaderboard">
+      <div class="section-head">
+        <h2 class="section-title">大模型性能榜</h2>
+        <span class="lb-source" id="lbSource">LMArena Elo · 更新于 2026-10-20 · 性能数据：Artificial Analysis</span>
+      </div>
+
+      <div class="lb-controls">
+        <div class="lb-sort" role="group" aria-label="排序方式">
+          <button class="lb-seg active" data-sort="elo">Elo 评分</button>
+          <button class="lb-seg" data-sort="speed">吞吐</button>
+          <button class="lb-seg" data-sort="ttft">首字延迟</button>
+          <button class="lb-seg" data-sort="price">价格</button>
+          <button class="lb-seg" data-sort="votes">投票数</button>
+        </div>
+        <button class="lb-chip" id="lbOssBtn" aria-pressed="false">只看开源</button>
+      </div>
+
+      <div class="podium" id="podium"></div>
+
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th class="col-rank">排名</th>
+              <th>模型</th>
+              <th class="col-license">许可</th>
+              <th class="col-score">Elo 评分</th>
+              <th class="col-speed">吞吐 tok/s</th>
+              <th class="col-ttft">首字延迟</th>
+              <th class="col-price">价格 $/1M</th>
+              <th class="col-votes">投票数</th>
+            </tr>
+          </thead>
+          <tbody id="lbBody"></tbody>
+        </table>
+      </div>
+      <p class="lb-note">Elo 评分来自数百万次真人盲测投票：分差 100 分约对应 64% 对局胜率，25 分以内属噪声波动。吞吐与首字延迟取自第三方公开测试的中位数，价格为厂商官方标价（美元/百万 token，入/出）；不同批次与网络环境会造成波动，「—」表示暂无公开数据。带 <span class="lb-flag pre">Preliminary</span> 标记的为初步评分，样本量较小。</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text">NEURAL<em>·时报</em></span>
+        <p>追踪智能时代的每一次脉动。</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>栏目</h4>
+          <a href="#latest">大模型</a><a href="#latest">芯片算力</a><a href="#latest">机器人</a><a href="#latest">行业应用</a>
+        </div>
+        <div class="footer-col">
+          <h4>关于</h4>
+          <a href="#top">关于我们</a><a href="#top">联系方式</a><a href="#top">内容声明</a>
+        </div>
+      </div>
+      <p class="footer-copy">© 2026 NEURAL·时报 · 站点内容仅供演示，新闻条目源自公开报道整理</p>
+    </div>
+  </footer>
+
+  <button class="back-top" id="backTop" aria-label="回到顶部">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 15 7-7 7 7"/></svg>
+  </button>
+
+  <div class="modal-mask" id="articleModal" hidden></div>
+
+  <script src="app.js?v=18"></script>
+</body>
+</html>
